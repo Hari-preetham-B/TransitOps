@@ -36,16 +36,16 @@ function DashboardPreview() {
   ];
 
   return (
-    <div className="w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+    <div className="w-full max-w-3xl rounded-[28px] border border-white/30 bg-white/70 p-6 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_rgba(15,23,42,0.18)]">
       {/* Header */}
 
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between border-b border-slate-200/60 pb-4">
         <div className="text-lg font-semibold text-slate-800">
           TransitOps Dashboard
         </div>
 
-        <div className="rounded-lg bg-slate-100 px-4 py-2 text-sm text-slate-500">
-          Search...
+        <div className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm text-slate-500 shadow-sm backdrop-blur">
+          🔍 Search vehicles...
         </div>
       </div>
 
@@ -66,13 +66,13 @@ function DashboardPreview() {
 
       {/* Charts */}
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <div className="h-56 rounded-2xl border border-slate-200 bg-white p-4">
           <h3 className="mb-3 text-sm font-semibold text-slate-700">
             Fleet Analytics
           </h3>
 
-          <div className="h-[170px]">
+          <div className="h-42.5">
             <FleetAreaChart />
           </div>
         </div>
@@ -82,7 +82,7 @@ function DashboardPreview() {
             Maintenance Trend
           </h3>
 
-          <div className="h-[170px]">
+          <div className="h-42.5">
             <MaintenanceBarChart />
           </div>
         </div>
