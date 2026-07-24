@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const authRoutes = require("./routes/authRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const errorMiddleware = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use("/api/auth", authRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 /*
 |--------------------------------------------------------------------------
 | Health Check Route
