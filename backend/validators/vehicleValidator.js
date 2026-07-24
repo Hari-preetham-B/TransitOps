@@ -27,6 +27,41 @@ const createVehicleValidator = [
     .withMessage("Invalid fuel type"),
 ];
 
+const updateVehicleValidator = [
+  body("vehicleNumber")
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage("Vehicle number cannot be empty"),
+
+  body("vehicleType")
+    .optional()
+    .isIn(["Bus", "Truck", "Van", "Car"])
+    .withMessage("Invalid vehicle type"),
+
+  body("capacity")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Capacity must be greater than 0"),
+
+  body("status")
+    .optional()
+    .isIn(["Available", "Active", "Maintenance"])
+    .withMessage("Invalid vehicle status"),
+
+  body("region")
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage("Region cannot be empty"),
+
+  body("fuelType")
+    .optional()
+    .isIn(["Diesel", "Petrol", "Electric", "CNG"])
+    .withMessage("Invalid fuel type"),
+];
+
 module.exports = {
   createVehicleValidator,
+  updateVehicleValidator,
 };
