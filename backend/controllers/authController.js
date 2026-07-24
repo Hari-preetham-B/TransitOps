@@ -1,55 +1,89 @@
 const User = require("../models/User");
+const asyncHandler = require("../middleware/asyncHandler");
 
-const registerUser = async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password, role } = req.body;
 
-    // Check if all required fields are provided
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Please fill all required fields",
-      });
-    }
-
-    // Check if email already exists
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists",
-      });
-    }
-
-    // Create new user
-    const user = await User.create({
-      name,
-      email,
-      password,
-      role,
-    });
-
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      data: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+  // Validate required fields
+  if (!name || !email || !password) {
+    res.status(400);
+    throw new Error("Please fill all required fields");
   }
-};
+
+  // Check if email already exists
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  // Create user
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role,
+  });
+
+  res.status(201).json({
+    success: true,
+    message: "User registered successfully",
+    data: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  });
+});
+
+const generateToken = require("../utils/generateToken");
+
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Please provide email and password");
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+
+  const token = generateToken(user._id);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Login successful",
+    data: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  });
+});
 
 module.exports = {
   registerUser,
+  loginUser,
 };
