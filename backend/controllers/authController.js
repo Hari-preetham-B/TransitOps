@@ -82,8 +82,15 @@ const loginUser = asyncHandler(async (req, res) => {
     },
   });
 });
-
+const getProfile = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Profile fetched successfully",
+    data: req.user,
+  });
+});
 module.exports = {
   registerUser,
   loginUser,
+  getProfile,
 };
