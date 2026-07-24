@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { TRIP_STATUS } = require("../utils/constants");
 const tripSchema = new mongoose.Schema(
   {
     tripCode: {
@@ -42,11 +42,19 @@ const tripSchema = new mongoose.Schema(
     endTime: {
       type: Date,
     },
-
+    distance: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
     status: {
       type: String,
-      enum: ["Pending", "Active", "Completed", "Cancelled"],
-      default: "Pending",
+      enum: Object.values(TRIP_STATUS),
+      default: TRIP_STATUS.PENDING,
+    },
+    remarks: {
+      type: String,
+      trim: true,
     },
   },
   {

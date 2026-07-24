@@ -1,5 +1,5 @@
 const { body } = require("express-validator");
-
+const { DRIVER_STATUS } = require("../utils/constants");
 const createDriverValidator = [
   body("name").trim().notEmpty().withMessage("Driver name is required"),
 
@@ -21,7 +21,7 @@ const createDriverValidator = [
 
   body("status")
     .optional()
-    .isIn(["Available", "On Duty", "Off Duty"])
+    .isIn(Object.values(DRIVER_STATUS))
     .withMessage("Invalid driver status"),
 
   body("assignedVehicle")
@@ -64,7 +64,7 @@ const updateDriverValidator = [
 
   body("status")
     .optional()
-    .isIn(["Available", "On Duty", "Off Duty"])
+    .isIn(Object.values(DRIVER_STATUS))
     .withMessage("Invalid driver status"),
 
   body("assignedVehicle")

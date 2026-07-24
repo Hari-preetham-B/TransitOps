@@ -1,14 +1,12 @@
 const { body } = require("express-validator");
-
+const { VEHICLE_TYPES, VEHICLE_STATUS } = require("../utils/constants");
 const createVehicleValidator = [
   body("vehicleNumber")
     .trim()
     .notEmpty()
     .withMessage("Vehicle number is required"),
 
-  body("vehicleType")
-    .isIn(["Bus", "Truck", "Van", "Car"])
-    .withMessage("Invalid vehicle type"),
+  body("vehicleType").isIn(VEHICLE_TYPES).withMessage("Invalid vehicle type"),
 
   body("capacity")
     .isInt({ min: 1 })
@@ -16,7 +14,7 @@ const createVehicleValidator = [
 
   body("status")
     .optional()
-    .isIn(["Available", "Active", "Maintenance"])
+    .isIn(Object.values(VEHICLE_STATUS))
     .withMessage("Invalid vehicle status"),
 
   body("region").trim().notEmpty().withMessage("Region is required"),
@@ -36,7 +34,7 @@ const updateVehicleValidator = [
 
   body("vehicleType")
     .optional()
-    .isIn(["Bus", "Truck", "Van", "Car"])
+    .isIn(VEHICLE_TYPES)
     .withMessage("Invalid vehicle type"),
 
   body("capacity")
@@ -46,7 +44,7 @@ const updateVehicleValidator = [
 
   body("status")
     .optional()
-    .isIn(["Available", "Active", "Maintenance"])
+    .isIn(Object.values(VEHICLE_STATUS))
     .withMessage("Invalid vehicle status"),
 
   body("region")

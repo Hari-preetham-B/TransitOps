@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { VEHICLE_STATUS, VEHICLE_TYPES } = require("../utils/constants");
 const vehicleSchema = new mongoose.Schema(
   {
     vehicleNumber: {
@@ -13,7 +13,7 @@ const vehicleSchema = new mongoose.Schema(
     vehicleType: {
       type: String,
       required: true,
-      enum: ["Bus", "Truck", "Van", "Car"],
+      enum: VEHICLE_TYPES,
     },
 
     capacity: {
@@ -24,8 +24,8 @@ const vehicleSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Available", "Active", "Maintenance"],
-      default: "Available",
+      enum: Object.values(VEHICLE_STATUS),
+      default: VEHICLE_STATUS.AVAILABLE,
     },
 
     region: {

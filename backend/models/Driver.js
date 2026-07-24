@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { DRIVER_STATUS } = require("../utils/constants");
 const driverSchema = new mongoose.Schema(
   {
     name: {
@@ -39,8 +39,8 @@ const driverSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Available", "On Duty", "Off Duty"],
-      default: "Available",
+      enum: Object.values(DRIVER_STATUS),
+      default: DRIVER_STATUS.AVAILABLE,
     },
     assignedVehicle: {
       type: mongoose.Schema.Types.ObjectId,
