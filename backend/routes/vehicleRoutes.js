@@ -27,4 +27,5 @@ router
   .get(protect, getVehicle)
   .put(protect, updateVehicleValidator, validate, editVehicle)
   .delete(protect, removeVehicle);
+
 module.exports = router;
