@@ -21,7 +21,16 @@ const driverSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+    },
 
+    experience: {
+      type: Number,
+      default: 0,
+    },
     region: {
       type: String,
       required: true,
@@ -32,6 +41,11 @@ const driverSchema = new mongoose.Schema(
       type: String,
       enum: ["Available", "On Duty", "Off Duty"],
       default: "Available",
+    },
+    assignedVehicle: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicle",
+      default: null,
     },
   },
   {
