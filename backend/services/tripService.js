@@ -1,7 +1,7 @@
 const Trip = require("../models/Trip");
 const Driver = require("../models/Driver");
 const Vehicle = require("../models/Vehicle");
-
+const ApiError = require("../utils/ApiError");
 const {
   DRIVER_STATUS,
   VEHICLE_STATUS,
@@ -14,27 +14,27 @@ const createTrip = async (tripData) => {
   });
 
   if (existingTrip) {
-    throw new Error("Trip code already exists");
+    throw new ApiError(409, "Trip code already exists");
   }
 
   const driver = await Driver.findById(tripData.driver);
 
   if (!driver) {
-    throw new Error("Driver not found");
+    throw new ApiError(404, "Driver not found");
   }
 
   const vehicle = await Vehicle.findById(tripData.vehicle);
 
   if (!vehicle) {
-    throw new Error("Vehicle not found");
+    throw new ApiError(404, "Vehicle not found");
   }
 
   if (driver.status !== DRIVER_STATUS.AVAILABLE) {
-    throw new Error("Driver is not available");
+    throw new ApiError(404, "Driver is not available");
   }
 
   if (vehicle.status !== VEHICLE_STATUS.AVAILABLE) {
-    throw new Error("Vehicle is not available");
+    throw new ApiError(409, "Vehicle is not available");
   }
 
   const trip = await Trip.create(tripData);
@@ -97,7 +97,7 @@ const getTripById = async (id) => {
   const trip = await Trip.findById(id).populate("driver").populate("vehicle");
 
   if (!trip) {
-    throw new Error("Trip not found");
+    throw new ApiError(404, "Trip not found");
   }
 
   return trip;
@@ -107,7 +107,7 @@ const updateTrip = async (id, updateData) => {
   const trip = await Trip.findById(id);
 
   if (!trip) {
-    throw new Error("Trip not found");
+    throw new ApiError(404, "Trip not found");
   }
 
   if (updateData.tripCode && updateData.tripCode !== trip.tripCode) {
@@ -116,7 +116,7 @@ const updateTrip = async (id, updateData) => {
     });
 
     if (existing) {
-      throw new Error("Trip code already exists");
+      throw new ApiError(409, "Trip code already exists");
     }
   }
 
@@ -164,7 +164,7 @@ const deleteTrip = async (id) => {
   const trip = await Trip.findById(id);
 
   if (!trip) {
-    throw new Error("Trip not found");
+    throw new ApiError(404, "Trip not found");
   }
 
   await Driver.findByIdAndUpdate(trip.driver, {

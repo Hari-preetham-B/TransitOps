@@ -1,12 +1,12 @@
 const Vehicle = require("../models/Vehicle");
-
+const ApiError = require("../utils/ApiError");
 const createVehicle = async (vehicleData) => {
   const existingVehicle = await Vehicle.findOne({
     vehicleNumber: vehicleData.vehicleNumber.toUpperCase(),
   });
 
   if (existingVehicle) {
-    throw new Error("Vehicle with this number already exists");
+    throw new ApiError(409, "Vehicle with this number already exists");
   }
 
   const vehicle = await Vehicle.create(vehicleData);
@@ -75,7 +75,7 @@ const getVehicleById = async (id) => {
   const vehicle = await Vehicle.findById(id);
 
   if (!vehicle) {
-    throw new Error("Vehicle not found");
+    throw new ApiError(404, "Vehicle not found");
   }
 
   return vehicle;
@@ -85,7 +85,7 @@ const updateVehicle = async (id, vehicleData) => {
   const vehicle = await Vehicle.findById(id);
 
   if (!vehicle) {
-    throw new Error("Vehicle not found");
+    throw new ApiError(404, "Vehicle not found");
   }
 
   // Prevent duplicate vehicle numbers
@@ -98,7 +98,7 @@ const updateVehicle = async (id, vehicleData) => {
     });
 
     if (existingVehicle) {
-      throw new Error("Vehicle number already exists");
+      throw new ApiError(409, "Vehicle number already exists");
     }
 
     vehicleData.vehicleNumber = vehicleData.vehicleNumber.toUpperCase();
@@ -116,7 +116,7 @@ const deleteVehicle = async (id) => {
   const vehicle = await Vehicle.findById(id);
 
   if (!vehicle) {
-    throw new Error("Vehicle not found");
+    throw new ApiError(404, "Vehicle not found");
   }
 
   await Vehicle.findByIdAndDelete(id);

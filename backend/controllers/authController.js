@@ -89,8 +89,24 @@ const getProfile = asyncHandler(async (req, res) => {
     data: req.user,
   });
 });
+
+const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "lax",
+    secure: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
+  logoutUser,
 };

@@ -1,12 +1,12 @@
 const Driver = require("../models/Driver");
-
+const ApiError = require("../utils/ApiError");
 const createDriver = async (driverData) => {
   const existingDriver = await Driver.findOne({
     licenseNumber: driverData.licenseNumber,
   });
 
   if (existingDriver) {
-    throw new Error("Driver with this license number already exists");
+    throw new ApiError(409, "Driver with this license number already exists");
   }
 
   return await Driver.create(driverData);
@@ -66,7 +66,7 @@ const getDriverById = async (id) => {
   );
 
   if (!driver) {
-    throw new Error("Driver not found");
+    throw new ApiError(404, "Driver not found");
   }
 
   return driver;
@@ -76,7 +76,7 @@ const updateDriver = async (id, updateData) => {
   const driver = await Driver.findById(id);
 
   if (!driver) {
-    throw new Error("Driver not found");
+    throw new ApiError(404, "Driver not found");
   }
 
   if (
@@ -88,7 +88,7 @@ const updateDriver = async (id, updateData) => {
     });
 
     if (existing) {
-      throw new Error("Driver with this license number already exists");
+      throw new ApiError(409, "Driver with this license number already exists");
     }
   }
 
@@ -102,7 +102,7 @@ const deleteDriver = async (id) => {
   const driver = await Driver.findById(id);
 
   if (!driver) {
-    throw new Error("Driver not found");
+    throw new ApiError(404, "Driver not found");
   }
 
   await Driver.findByIdAndDelete(id);
