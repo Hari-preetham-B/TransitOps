@@ -76,6 +76,30 @@ router.post("/register", registerUser);
  *         description: Invalid credentials
  */
 router.post("/login", loginUser);
+/**
+ * @swagger
+ * /api/auth/profile:
+ *   get:
+ *     summary: Get current user's profile
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Profile fetched successfully
+ */
 router.get("/profile", protect, getProfile);
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ */
 router.post("/logout", protect, logoutUser);
 module.exports = router;

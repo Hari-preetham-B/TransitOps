@@ -26,6 +26,7 @@ const Button = forwardRef(
       size = "md",
       className = "",
       type = "button",
+      loading = false,
       ...props
     },
     ref,
@@ -34,6 +35,7 @@ const Button = forwardRef(
       <button
         ref={ref}
         type={type}
+        disabled={loading || props.disabled}
         className={`
           inline-flex
           items-center
@@ -52,7 +54,7 @@ const Button = forwardRef(
         `}
         {...props}
       >
-        {children}
+        {loading ? "Please wait..." : children}
       </button>
     );
   },

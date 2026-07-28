@@ -1,8 +1,15 @@
-function StatCard({ title, value, trend, color, icon: Icon }) {
+function StatCard({
+  title,
+  value,
+  trend,
+  color,
+  icon: Icon,
+  bg = "bg-slate-100",
+}) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="flex items-center justify-between">
-        <div className="rounded-xl bg-slate-100 p-2">
+        <div className={`rounded-xl ${bg} p-2`}>
           <Icon className={`h-5 w-5 ${color}`} />
         </div>
 
