@@ -7,3 +7,7 @@ export const getDashboardStats = async (filters = {}) => {
 
   return data.data;
 };
+export const getRegions = async () => {
+  const { data } = await api.get("/dashboard/regions");
+  return data.data;
+};

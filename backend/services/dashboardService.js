@@ -69,7 +69,10 @@ const getDashboardStats = async (filters = {}) => {
     fleetUtilization,
   };
 };
-
+const getRegions = async () => {
+  return await Vehicle.distinct("region");
+};
 module.exports = {
   getDashboardStats,
+  getRegions,
 };
