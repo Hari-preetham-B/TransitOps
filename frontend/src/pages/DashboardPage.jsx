@@ -52,7 +52,7 @@ function DashboardPage() {
       <DashboardFilters filters={filters} setFilters={setFilters} />
       <DashboardStats stats={stats} />
       {/* Charts */}
-      <DashboardCharts />
+      <DashboardCharts analytics={stats.analytics} />
       <div className="mt-8">
         <RecentTrips />
       </div>

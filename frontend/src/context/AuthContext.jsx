@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const isAuthenticated = !!user;
 
@@ -19,10 +19,6 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
 
   const login = async (credentials) => {
     await authService.login(credentials);
@@ -45,6 +41,7 @@ export function AuthProvider({ children }) {
         loading,
         login,
         logout,
+        fetchProfile,
         isAuthenticated,
       }}
     >

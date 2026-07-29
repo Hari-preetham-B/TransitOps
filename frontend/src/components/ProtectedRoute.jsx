@@ -1,10 +1,16 @@
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth();
+  const { user, loading, fetchProfile, isAuthenticated } = useAuth();
 
-  // Wait until the authentication check finishes
+  useEffect(() => {
+    if (!user) {
+      fetchProfile();
+    }
+  }, [user, fetchProfile]);
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -13,12 +19,10 @@ function ProtectedRoute({ children }) {
     );
   }
 
-  // Redirect unauthenticated users
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Render protected content
   return children;
 }
 

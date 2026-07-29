@@ -59,6 +59,23 @@ const getDashboardStats = async (filters = {}) => {
       ? 0
       : Math.round((activeVehicles / totalVehicles) * 100);
 
+  const tripStatus = await Trip.aggregate([
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const vehicleStatus = await Vehicle.aggregate([
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
   return {
     activeVehicles,
     availableVehicles,
@@ -67,6 +84,11 @@ const getDashboardStats = async (filters = {}) => {
     pendingTrips,
     driversOnDuty,
     fleetUtilization,
+
+    analytics: {
+      tripStatus,
+      vehicleStatus,
+    },
   };
 };
 const getRegions = async () => {
