@@ -8,6 +8,18 @@ const createDriverValidator = [
     .notEmpty()
     .withMessage("License number is required"),
 
+  body("licenseCategory").optional().trim(),
+
+  body("licenseExpiryDate")
+    .optional()
+    .isISO8601()
+    .withMessage("License expiry date must be a valid date"),
+
+  body("safetyScore")
+    .optional()
+    .isInt({ min: 0, max: 100 })
+    .withMessage("Safety score must be between 0 and 100"),
+
   body("phone").trim().notEmpty().withMessage("Phone number is required"),
 
   body("email").optional().isEmail().withMessage("Invalid email address"),
@@ -42,6 +54,18 @@ const updateDriverValidator = [
     .trim()
     .notEmpty()
     .withMessage("License number cannot be empty"),
+
+  body("licenseCategory").optional().trim(),
+
+  body("licenseExpiryDate")
+    .optional()
+    .isISO8601()
+    .withMessage("License expiry date must be a valid date"),
+
+  body("safetyScore")
+    .optional()
+    .isInt({ min: 0, max: 100 })
+    .withMessage("Safety score must be between 0 and 100"),
 
   body("phone")
     .optional()

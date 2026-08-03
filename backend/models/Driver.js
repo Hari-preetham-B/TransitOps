@@ -16,6 +16,22 @@ const driverSchema = new mongoose.Schema(
       trim: true,
     },
 
+    licenseCategory: {
+      type: String,
+      trim: true,
+    },
+
+    licenseExpiryDate: {
+      type: Date,
+    },
+
+    safetyScore: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100,
+    },
+
     phone: {
       type: String,
       required: true,
