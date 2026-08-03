@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { protect } = require("../middleware/authMiddleware");
+const { authorize } = require("../middleware/authorizeMiddleware");
 const validate = require("../middleware/validationMiddleware");
 
 const {
@@ -19,13 +20,25 @@ const {
 
 router
   .route("/")
-  .get(protect, getVehicles)
-  .post(protect, createVehicleValidator, validate, addVehicle);
+  .get(protect, authorize("vehicles", "read"), getVehicles)
+  .post(
+    protect,
+    authorize("vehicles", "write"),
+    createVehicleValidator,
+    validate,
+    addVehicle,
+  );
 
 router
   .route("/:id")
-  .get(protect, getVehicle)
-  .put(protect, updateVehicleValidator, validate, editVehicle)
-  .delete(protect, removeVehicle);
+  .get(protect, authorize("vehicles", "read"), getVehicle)
+  .put(
+    protect,
+    authorize("vehicles", "write"),
+    updateVehicleValidator,
+    validate,
+    editVehicle,
+  )
+  .delete(protect, authorize("vehicles", "write"), removeVehicle);
 
 module.exports = router;
