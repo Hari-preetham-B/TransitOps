@@ -29,25 +29,85 @@ const createTrip = async (tripData) => {
     throw new ApiError(404, "Vehicle not found");
   }
 
-  if (driver.status !== DRIVER_STATUS.AVAILABLE) {
-    throw new ApiError(404, "Driver is not available");
+  // Cargo weight must not exceed the vehicle's max load capacity
+  if (tripData.cargoWeight && tripData.cargoWeight > vehicle.maxLoadCapacity) {
+    throw new ApiError(
+      400,
+      `Cargo weight (${tripData.cargoWeight}) exceeds vehicle max load capacity (${vehicle.maxLoadCapacity})`,
+    );
   }
 
-  if (vehicle.status !== VEHICLE_STATUS.AVAILABLE) {
-    throw new ApiError(409, "Vehicle is not available");
+  // Trips are created as Draft by default; dispatch rules are enforced on dispatch
+  const trip = await Trip.create({
+    ...tripData,
+    status: tripData.status || TRIP_STATUS.DRAFT,
+  });
+
+  return await Trip.findById(trip._id).populate("driver").populate("vehicle");
+};
+
+const dispatchTrip = async (trip) => {
+  const driver = await Driver.findById(trip.driver);
+
+  if (!driver) {
+    throw new ApiError(404, "Driver not found");
   }
 
-  const trip = await Trip.create(tripData);
+  const vehicle = await Vehicle.findById(trip.vehicle);
 
-  driver.status = DRIVER_STATUS.ON_DUTY;
+  if (!vehicle) {
+    throw new ApiError(404, "Vehicle not found");
+  }
+
+  // Retired or In Shop vehicles must never appear in dispatch selection
+  if (
+    vehicle.status === VEHICLE_STATUS.RETIRED ||
+    vehicle.status === VEHICLE_STATUS.IN_SHOP
+  ) {
+    throw new ApiError(
+      409,
+      `Vehicle is ${vehicle.status} and cannot be dispatched`,
+    );
+  }
+
+  // A vehicle already On Trip cannot be assigned to another trip
+  if (vehicle.status === VEHICLE_STATUS.ON_TRIP) {
+    throw new ApiError(409, "Vehicle is already on a trip");
+  }
+
+  // Drivers with expired licenses or Suspended status cannot be assigned to trips
+  if (driver.status === DRIVER_STATUS.SUSPENDED) {
+    throw new ApiError(409, "Driver is suspended and cannot be assigned");
+  }
+
+  if (
+    driver.licenseExpiryDate &&
+    new Date(driver.licenseExpiryDate) < new Date()
+  ) {
+    throw new ApiError(409, "Driver license has expired");
+  }
+
+  // A driver already On Trip cannot be assigned to another trip
+  if (driver.status === DRIVER_STATUS.ON_TRIP) {
+    throw new ApiError(409, "Driver is already on a trip");
+  }
+
+  // Cargo weight must not exceed the vehicle's max load capacity
+  if (trip.cargoWeight && trip.cargoWeight > vehicle.maxLoadCapacity) {
+    throw new ApiError(
+      400,
+      `Cargo weight (${trip.cargoWeight}) exceeds vehicle max load capacity (${vehicle.maxLoadCapacity})`,
+    );
+  }
+
+  // Dispatching a trip auto-changes both vehicle and driver status to On Trip
+  driver.status = DRIVER_STATUS.ON_TRIP;
   driver.assignedVehicle = vehicle._id;
 
-  vehicle.status = VEHICLE_STATUS.IN_USE;
+  vehicle.status = VEHICLE_STATUS.ON_TRIP;
 
   await driver.save();
   await vehicle.save();
-
-  return await Trip.findById(trip._id).populate("driver").populate("vehicle");
 };
 
 const getAllTrips = async ({
@@ -121,6 +181,15 @@ const updateTrip = async (id, updateData) => {
   }
 
   const previousStatus = trip.status;
+  const newStatus = updateData.status || previousStatus;
+
+  // If dispatching, enforce all dispatch rules and update driver/vehicle status
+  if (
+    previousStatus !== TRIP_STATUS.DISPATCHED &&
+    newStatus === TRIP_STATUS.DISPATCHED
+  ) {
+    await dispatchTrip(trip);
+  }
 
   const updatedTrip = await Trip.findByIdAndUpdate(id, updateData, {
     new: true,
@@ -129,6 +198,7 @@ const updateTrip = async (id, updateData) => {
     .populate("driver")
     .populate("vehicle");
 
+  // Completing a trip auto-changes both back to Available
   if (
     previousStatus !== TRIP_STATUS.COMPLETED &&
     updatedTrip.status === TRIP_STATUS.COMPLETED
@@ -143,6 +213,7 @@ const updateTrip = async (id, updateData) => {
     });
   }
 
+  // Cancelling a dispatched trip restores vehicle and driver to Available
   if (
     previousStatus !== TRIP_STATUS.CANCELLED &&
     updatedTrip.status === TRIP_STATUS.CANCELLED
@@ -167,14 +238,17 @@ const deleteTrip = async (id) => {
     throw new ApiError(404, "Trip not found");
   }
 
-  await Driver.findByIdAndUpdate(trip.driver, {
-    status: DRIVER_STATUS.AVAILABLE,
-    assignedVehicle: null,
-  });
+  // Only restore driver/vehicle if the trip was dispatched
+  if (trip.status === TRIP_STATUS.DISPATCHED) {
+    await Driver.findByIdAndUpdate(trip.driver, {
+      status: DRIVER_STATUS.AVAILABLE,
+      assignedVehicle: null,
+    });
 
-  await Vehicle.findByIdAndUpdate(trip.vehicle, {
-    status: VEHICLE_STATUS.AVAILABLE,
-  });
+    await Vehicle.findByIdAndUpdate(trip.vehicle, {
+      status: VEHICLE_STATUS.AVAILABLE,
+    });
+  }
 
   await Trip.findByIdAndDelete(id);
 
