@@ -8,6 +8,8 @@ import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import VehiclesPage from "../pages/VehiclesPage";
 import DriversPage from "../pages/DriversPage";
+import TripsPage from "../pages/TripsPage";
+import MaintenancePage from "../pages/MaintenancePage";
 import NotFoundPage from "../pages/NotFoundPage";
 
 function AppRoutes() {
@@ -44,6 +46,24 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <DriversPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/trips"
+        element={
+          <ProtectedRoute>
+            <TripsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/maintenance"
+        element={
+          <ProtectedRoute>
+            <MaintenancePage />
           </ProtectedRoute>
         }
       />
