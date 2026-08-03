@@ -39,7 +39,7 @@ const { protect } = require("../middleware/authMiddleware");
  *                 example: 123456
  *               role:
  *                 type: string
- *                 example: admin
+ *                 example: Fleet Manager
  *     responses:
  *       201:
  *         description: User registered successfully

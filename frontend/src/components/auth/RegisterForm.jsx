@@ -13,7 +13,12 @@ const schema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["admin", "manager", "driver"]),
+  role: z.enum([
+    "Fleet Manager",
+    "Driver",
+    "Safety Officer",
+    "Financial Analyst",
+  ]),
 });
 
 function RegisterForm() {
@@ -27,7 +32,7 @@ function RegisterForm() {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      role: "manager",
+      role: "Fleet Manager",
     },
   });
 
@@ -79,9 +84,10 @@ function RegisterForm() {
           {...register("role")}
           className="w-full rounded-lg border border-gray-300 px-4 py-2"
         >
-          <option value="admin">Admin</option>
-          <option value="manager">Manager</option>
-          <option value="driver">Driver</option>
+          <option value="Fleet Manager">Fleet Manager</option>
+          <option value="Driver">Driver</option>
+          <option value="Safety Officer">Safety Officer</option>
+          <option value="Financial Analyst">Financial Analyst</option>
         </select>
       </div>
 
