@@ -8,6 +8,11 @@ const createTripValidator = [
 
   body("destination").trim().notEmpty().withMessage("Destination is required"),
 
+  body("cargoWeight")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Cargo weight must be a non-negative number"),
+
   body("startTime")
     .notEmpty()
     .withMessage("Start time is required")
@@ -53,6 +58,11 @@ const updateTripValidator = [
     .trim()
     .notEmpty()
     .withMessage("Destination cannot be empty"),
+
+  body("cargoWeight")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Cargo weight must be a non-negative number"),
 
   body("startTime")
     .optional()

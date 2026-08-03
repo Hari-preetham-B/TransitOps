@@ -34,6 +34,12 @@ const tripSchema = new mongoose.Schema(
       trim: true,
     },
 
+    cargoWeight: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
     startTime: {
       type: Date,
       required: true,
@@ -50,7 +56,7 @@ const tripSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: Object.values(TRIP_STATUS),
-      default: TRIP_STATUS.PENDING,
+      default: TRIP_STATUS.DRAFT,
     },
     remarks: {
       type: String,
