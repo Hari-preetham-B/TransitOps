@@ -2,6 +2,11 @@ const Vehicle = require("../models/Vehicle");
 const Driver = require("../models/Driver");
 const Trip = require("../models/Trip");
 const Maintenance = require("../models/Maintenance");
+const {
+  VEHICLE_STATUS,
+  DRIVER_STATUS,
+  TRIP_STATUS,
+} = require("../utils/constants");
 
 const getDashboardStats = async (filters = {}) => {
   const vehicleFilter = {};
@@ -21,34 +26,34 @@ const getDashboardStats = async (filters = {}) => {
   // Vehicle Statistics
   const activeVehicles = await Vehicle.countDocuments({
     ...vehicleFilter,
-    status: "Active",
+    status: VEHICLE_STATUS.ON_TRIP,
   });
 
   const availableVehicles = await Vehicle.countDocuments({
     ...vehicleFilter,
-    status: "Available",
+    status: VEHICLE_STATUS.AVAILABLE,
   });
 
-  // Maintenance Statistics
-  const vehiclesInMaintenance = await Maintenance.countDocuments({
-    status: "In Progress",
+  const vehiclesInMaintenance = await Vehicle.countDocuments({
+    ...vehicleFilter,
+    status: VEHICLE_STATUS.IN_SHOP,
   });
 
   // Trip Statistics
   const activeTrips = await Trip.countDocuments({
     ...tripFilter,
-    status: "Active",
+    status: TRIP_STATUS.DISPATCHED,
   });
 
   const pendingTrips = await Trip.countDocuments({
     ...tripFilter,
-    status: "Pending",
+    status: TRIP_STATUS.DRAFT,
   });
 
   // Driver Statistics
   const driversOnDuty = await Driver.countDocuments({
     ...driverFilter,
-    status: "On Duty",
+    status: DRIVER_STATUS.ON_TRIP,
   });
 
   // Fleet Utilization

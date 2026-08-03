@@ -14,28 +14,28 @@ function DashboardCharts({ analytics }) {
   const tripStatusData =
     analytics?.tripStatus?.map((item) => ({
       name: item._id,
-      value: item.count,
+      count: item.count,
     })) || [];
 
   const vehicleStatusData =
     analytics?.vehicleStatus?.map((item) => ({
       name: item._id,
-      value: item.count,
+      count: item.count,
     })) || [];
   return (
     <div className="mt-10 grid gap-6 lg:grid-cols-2">
       <div className="rounded-3xl bg-white p-6 shadow-lg">
-        <h2 className="mb-6 text-xl font-semibold">Fleet Analytics</h2>
+        <h2 className="mb-6 text-xl font-semibold">Trip Status</h2>
 
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={tripStatusData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
+            <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Line
               type="monotone"
-              dataKey="trips"
+              dataKey="count"
               stroke="#2563eb"
               strokeWidth={3}
             />
@@ -44,12 +44,12 @@ function DashboardCharts({ analytics }) {
       </div>
 
       <div className="rounded-3xl bg-white p-6 shadow-lg">
-        <h2 className="mb-6 text-xl font-semibold">Maintenance Trend</h2>
+        <h2 className="mb-6 text-xl font-semibold">Vehicle Status</h2>
 
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={vehicleStatusData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
+            <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} />

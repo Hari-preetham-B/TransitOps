@@ -22,9 +22,9 @@ function RecentTrips() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Active":
+      case "Dispatched":
         return "bg-green-100 text-green-700";
-      case "Pending":
+      case "Draft":
         return "bg-yellow-100 text-yellow-700";
       case "Completed":
         return "bg-blue-100 text-blue-700";
