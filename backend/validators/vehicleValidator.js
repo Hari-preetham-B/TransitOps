@@ -6,11 +6,25 @@ const createVehicleValidator = [
     .notEmpty()
     .withMessage("Vehicle number is required"),
 
+  body("name").optional().trim(),
+
+  body("model").optional().trim(),
+
   body("vehicleType").isIn(VEHICLE_TYPES).withMessage("Invalid vehicle type"),
 
-  body("capacity")
+  body("maxLoadCapacity")
     .isInt({ min: 1 })
-    .withMessage("Capacity must be greater than 0"),
+    .withMessage("Max load capacity must be greater than 0"),
+
+  body("odometer")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("Odometer must be a non-negative number"),
+
+  body("acquisitionCost")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Acquisition cost must be a non-negative number"),
 
   body("status")
     .optional()
@@ -32,15 +46,29 @@ const updateVehicleValidator = [
     .notEmpty()
     .withMessage("Vehicle number cannot be empty"),
 
+  body("name").optional().trim(),
+
+  body("model").optional().trim(),
+
   body("vehicleType")
     .optional()
     .isIn(VEHICLE_TYPES)
     .withMessage("Invalid vehicle type"),
 
-  body("capacity")
+  body("maxLoadCapacity")
     .optional()
     .isInt({ min: 1 })
-    .withMessage("Capacity must be greater than 0"),
+    .withMessage("Max load capacity must be greater than 0"),
+
+  body("odometer")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("Odometer must be a non-negative number"),
+
+  body("acquisitionCost")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Acquisition cost must be a non-negative number"),
 
   body("status")
     .optional()

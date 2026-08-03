@@ -10,16 +10,38 @@ const vehicleSchema = new mongoose.Schema(
       uppercase: true,
     },
 
+    name: {
+      type: String,
+      trim: true,
+    },
+
+    model: {
+      type: String,
+      trim: true,
+    },
+
     vehicleType: {
       type: String,
       required: true,
       enum: VEHICLE_TYPES,
     },
 
-    capacity: {
+    maxLoadCapacity: {
       type: Number,
       required: true,
       min: 1,
+    },
+
+    odometer: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    acquisitionCost: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
 
     status: {

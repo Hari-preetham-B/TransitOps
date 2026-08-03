@@ -1,18 +1,20 @@
 const DRIVER_STATUS = {
   AVAILABLE: "Available",
-  ON_DUTY: "On Duty",
+  ON_TRIP: "On Trip",
   OFF_DUTY: "Off Duty",
+  SUSPENDED: "Suspended",
 };
 
 const VEHICLE_STATUS = {
   AVAILABLE: "Available",
-  IN_USE: "In Use",
-  MAINTENANCE: "Maintenance",
+  ON_TRIP: "On Trip",
+  IN_SHOP: "In Shop",
+  RETIRED: "Retired",
 };
 
 const TRIP_STATUS = {
-  PENDING: "Pending",
-  ACTIVE: "Active",
+  DRAFT: "Draft",
+  DISPATCHED: "Dispatched",
   COMPLETED: "Completed",
   CANCELLED: "Cancelled",
 };
