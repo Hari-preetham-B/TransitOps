@@ -10,6 +10,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const tripRoutes = require("./routes/tripRoutes");
+const maintenanceRoutes = require("./routes/maintenanceRoutes");
 
 const errorMiddleware = require("./middleware/errorMiddleware");
 
@@ -47,6 +48,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/trips", tripRoutes);
+app.use("/api/maintenance", maintenanceRoutes);
 /*
 |--------------------------------------------------------------------------
 | Health Check Route
