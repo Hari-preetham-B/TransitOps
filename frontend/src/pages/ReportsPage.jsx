@@ -7,7 +7,7 @@ const REPORT_TYPES = [
   { value: "fuelEfficiency", label: "Fuel Efficiency" },
   { value: "fleetUtilization", label: "Fleet Utilization" },
   { value: "operationalCost", label: "Operational Cost" },
-  { value: "vehicleRoi", label: "Vehicle ROI" },
+  { value: "vehicleRoi", label: "Estimated ROI" },
 ];
 
 const CURRENCY_FIELDS = new Set([
@@ -108,6 +108,12 @@ function ReportsPage() {
           <p className="text-sm text-slate-500">
             Operational analytics and cost reports for your fleet.
           </p>
+          {reportType === "vehicleRoi" && (
+            <p className="mt-1 text-xs text-slate-400">
+              Estimated ROI uses cargo weight × distance as a revenue proxy
+              (actual trip revenue is not tracked).
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <select
