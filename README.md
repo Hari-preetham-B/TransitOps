@@ -1,345 +1,256 @@
 <div align="center">
 
-# 🚍 TransitOps
-### Intelligent Fleet Operations Platform
+# 🚚 TransitOps
+### Smart Transport Operations Platform
 
-<p align="center">
-A modern, scalable Fleet Management System built with the MERN Stack to streamline transportation operations through secure authentication, real-time dashboards, and end-to-end fleet management.
-</p>
+[![License](https://img.shields.io/badge/license-MIT-yellow)](#-license)
+[![Status](https://img.shields.io/badge/status-Fully%20Operational-brightgreen)]()
+[![Node](https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white)]()
+[![Express](https://img.shields.io/badge/express-5-black?logo=express&logoColor=white)]()
+[![React](https://img.shields.io/badge/react-19-61DAFB?logo=react&logoColor=black)]()
+[![MongoDB](https://img.shields.io/badge/mongodb-%2B%20mongoose-47A248?logo=mongodb&logoColor=white)]()
+[![Tailwind](https://img.shields.io/badge/tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)]()
 
-<p align="center">
-
-![GitHub repo size](https://img.shields.io/github/repo-size/Hari-preetham-B/TransitOps?style=for-the-badge)
-
-![GitHub last commit](https://img.shields.io/github/last-commit/Hari-preetham-B/TransitOps?style=for-the-badge)
-
-![GitHub stars](https://img.shields.io/github/stars/Hari-preetham-B/TransitOps?style=for-the-badge)
-
-![GitHub forks](https://img.shields.io/github/forks/Hari-preetham-B/TransitOps?style=for-the-badge)
-
-![License](https://img.shields.io/github/license/Hari-preetham-B/TransitOps?style=for-the-badge)
-
-</p>
-
-<p align="center">
-
-<img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=600&size=24&duration=3000&pause=1000&center=true&vCenter=true&width=700&lines=Fleet+Management+Platform;MERN+Stack+Application;Role-Based+Access+Control;Analytics+Dashboard;Vehicle+%7C+Driver+%7C+Trip+Management" />
-
-</p>
-
----
+**TransitOps is a full-stack transport operations platform that digitizes vehicle, driver, dispatch, maintenance, and expense management** — replacing spreadsheets and manual logbooks with one live, role-based system that enforces business rules automatically.
 
 </div>
 
-# 📖 Overview
+---
 
-**TransitOps** is a full-stack Fleet Management and Transport Operations Platform built using the **MERN Stack**.
+## 📑 Table of Contents
 
-The platform enables organizations to efficiently manage:
-
-- 🚚 Fleet Vehicles
-- 👨‍✈️ Drivers
-- 🛣 Trips
-- 🛠 Maintenance
-- 📊 Operational Analytics
-
-TransitOps combines secure authentication, modular architecture, responsive UI, and real-time dashboard analytics into a single modern web application.
+- [Overview](#-overview)
+- [The 5 Modules](#-the-5-modules)
+- [Business Workflow](#-business-workflow)
+- [Tech Stack](#-tech-stack)
+- [Quick Start](#-quick-start)
+- [Environment Variables](#-environment-variables)
+- [Role & Permission Matrix](#-role--permission-matrix)
+- [Business Rules Enforced](#-business-rules-enforced)
+- [Project Structure](#-project-structure)
+- [License](#-license)
 
 ---
 
-# ✨ Key Features
+## 🌍 Overview
 
-### 🔐 Authentication & Security
+Most logistics teams still run their fleet on spreadsheets and paper logbooks — leading to double-booked vehicles, missed maintenance, expired driver licenses, and no real visibility into cost or performance.
 
-- JWT Authentication
-- HTTP-only Cookie Sessions
-- Role-Based Access Control (RBAC)
-- Protected Routes
-- Secure REST APIs
+**TransitOps fixes that by unifying:**
 
----
+- 🚐 **Fleet** — vehicle registry, live status, lifecycle tracking
+- 🧑‍✈️ **Drivers** — profiles, license compliance, safety scores
+- 📦 **Dispatch** — trip creation, validation, and lifecycle automation
+- 🔧 **Maintenance** — service logs with automatic fleet status sync
+- ⛽ **Finance** — fuel logs, expenses, operational cost & ROI reporting
 
-### 📊 Dashboard
-
-- Fleet Overview
-- Active Vehicles
-- Available Vehicles
-- Trips Overview
-- Maintenance Summary
-- Fleet Utilization
-- Dynamic Filters
-- Analytics Charts
+...into a single role-based dashboard, with live KPIs computed straight from operational data.
 
 ---
 
-### 🚚 Vehicle Management
+## 🧩 The 5 Modules
 
-- Add Vehicle
-- Update Vehicle
-- Delete Vehicle
-- Vehicle Search
-- Vehicle Filters
-- Pagination
+<details open>
+<summary><b>📋 Phase 1 — Authentication, RBAC & Core Data Model</b></summary>
+
+- Secure email/password authentication with JWT (httpOnly cookies)
+- Role-Based Access Control across 4 roles: **Fleet Manager, Driver, Safety Officer, Financial Analyst**
+- Vehicle & Driver registries with strict uniqueness (registration number, license number)
+- Status lifecycles enforced at the schema and service layer
+
+</details>
+
+<details open>
+<summary><b>🚦 Phase 2 — Trip Management</b></summary>
+
+- Trip lifecycle: `Draft → Dispatched → Completed → Cancelled`
+- Cargo weight validated against vehicle max load capacity
+- Vehicle/driver availability, license expiry, and suspension checks enforced before dispatch
+- Dispatch/Complete/Cancel automatically syncs vehicle & driver status
+
+</details>
+
+<details open>
+<summary><b>🔧 Phase 3 — Maintenance</b></summary>
+
+- Create/close maintenance records per vehicle
+- Active maintenance automatically switches a vehicle to **In Shop**, removing it from dispatch
+- Closing maintenance restores the vehicle to **Available** (unless Retired)
+
+</details>
+
+<details open>
+<summary><b>🛡️ Phase 4 — Role-Based Access Control</b></summary>
+
+- Backend permission matrix middleware guarding every route by resource + action
+- Frontend UI mirrors backend permissions — write actions are hidden/disabled per role, not just blocked server-side
+
+</details>
+
+<details open>
+<summary><b>⛽ Phase 5 — Fuel, Expenses & Reports</b></summary>
+
+- Fuel log & expense tracking per vehicle
+- Auto-computed operational cost (Fuel + Maintenance) per vehicle
+- Reports: Fuel Efficiency, Fleet Utilization, Operational Cost, Estimated ROI
+- CSV export for all report types
+
+</details>
 
 ---
 
-### 👨‍✈️ Driver Management
+## 🔄 Business Workflow
 
-- Driver CRUD
-- Driver Status
-- Driver Assignment
-- Availability Tracking
-
----
-
-### 🛣 Trip Management
-
-- Trip Creation
-- Driver Assignment
-- Vehicle Assignment
-- Route Tracking
-- Trip Status Management
-
----
-
-### 🛠 Maintenance
-
-- Schedule Maintenance
-- Update Status
-- Maintenance History
-- Vehicle Availability
-
----
-
-### 📈 Reports & Analytics
-
-- Fleet Utilization
-- Vehicle Statistics
-- Trip Statistics
-- Dashboard Insights
-- Operational Metrics
-
----
-
-# 🏗 System Architecture
-
-```text
-                React + Vite
-                      │
-          ┌───────────┴───────────┐
-          │                       │
- Authentication             Dashboard
-          │                       │
-          └───────────┬───────────┘
-                      │
-               Express REST API
-                      │
-      ┌───────────────┼────────────────┐
-      │               │                │
-  Vehicle API     Driver API      Trip API
-      │               │                │
-      └───────────────┼────────────────┘
-                      │
-               Maintenance API
-                      │
-                  MongoDB Atlas
+```
+Register Vehicle ──▶ Register Driver ──▶ Create Trip (Draft)
+                                               │
+                                               ▼
+                                    Validate: capacity, license,
+                                    status, availability
+                                               │
+                                               ▼
+                                     Dispatch ──▶ vehicle & driver
+                                                  set to "On Trip"
+                                               │
+                              ┌────────────────┼────────────────┐
+                              ▼                                 ▼
+                        Complete Trip                     Cancel Trip
+                   (log odometer + fuel)              (restore availability)
+                              │
+                              ▼
+                  Vehicle & Driver → Available
+                              │
+                              ▼
+                Maintenance record (optional) ──▶ vehicle → "In Shop"
+                              │
+                              ▼
+              Reports auto-update: cost, efficiency, utilization, ROI
 ```
 
 ---
 
-# 🛠 Tech Stack
+## 🛠️ Tech Stack
 
-## Frontend
-
-- React.js
-- Vite
-- Tailwind CSS
-- React Router
-- Axios
-- Recharts
-- React Toastify
-- Lucide React
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, React Router 7, Tailwind CSS 4, Recharts, React Hook Form + Zod, Axios |
+| **Backend** | Node.js, Express 5, Mongoose (MongoDB) |
+| **Auth** | JWT (httpOnly cookies), bcrypt password hashing |
+| **Validation** | express-validator (backend), Zod (frontend) |
+| **Docs** | Swagger / OpenAPI at `/api-docs` |
+| **Tooling** | Vite, ESLint |
 
 ---
 
-## Backend
+## 🚀 Quick Start
 
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT Authentication
-- Cookie Parser
-- bcrypt
-- dotenv
+### Prerequisites
+- Node.js ≥ 18
+- MongoDB (local or Atlas)
 
----
-
-## Development Tools
-
-- Git
-- GitHub
-- VS Code
-- Postman
-
----
-
-# 📂 Project Structure
-
-```text
-TransitOps
-│
-├── frontend
-│   ├── components
-│   ├── pages
-│   ├── layouts
-│   ├── routes
-│   ├── services
-│   ├── hooks
-│   └── context
-│
-├── backend
-│   ├── controllers
-│   ├── models
-│   ├── routes
-│   ├── middleware
-│   ├── services
-│   ├── config
-│   └── utils
-│
-└── README.md
-```
-
----
-
-# 🚀 Current Features
-
-| Module | Status |
-|---------|:------:|
-| Landing Page | ✅ |
-| Authentication | ✅ |
-| JWT Security | ✅ |
-| Dashboard | ✅ |
-| Dashboard Filters | ✅ |
-| Dashboard Statistics | ✅ |
-| Recent Trips | ✅ |
-| Vehicle CRUD | 🚧 |
-| Driver CRUD | 🚧 |
-| Trip CRUD | 🚧 |
-| Maintenance CRUD | 🚧 |
-| Reports | ⏳ |
-
----
-
-# 🗺 Roadmap
-
-### Phase 1
-
-- [x] Authentication
-- [x] Landing Page
-- [x] Dashboard
-- [x] Dashboard Filters
-- [x] Analytics Cards
-
-### Phase 2
-
-- [ ] Vehicle Management
-- [ ] Driver Management
-- [ ] Trip Management
-- [ ] Maintenance Module
-
-### Phase 3
-
-- [ ] Live Analytics
-- [ ] Reports
-- [ ] Export Data
-- [ ] Notifications
-- [ ] Performance Optimization
-
----
-
-# ⚡ Getting Started
-
-## Clone Repository
-
+### 1. Clone the repository
 ```bash
 git clone https://github.com/Hari-preetham-B/TransitOps.git
+cd TransitOps
 ```
 
-## Install Frontend
+### 2. Backend setup
+```bash
+cd backend
+npm install
+cp .env.example .env   # then fill in your values — see below
+npm run dev
+```
+Backend runs on `http://localhost:5000` · Swagger docs at `http://localhost:5000/api-docs`
 
+### 3. Frontend setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+Frontend runs on `http://localhost:5173`
 
-## Install Backend
-
+### 4. (Optional) Migrate legacy status values
+If you're seeding from older test data with outdated status enums:
 ```bash
 cd backend
-npm install
-npm run dev
+node scripts/migrateStatuses.js
 ```
 
 ---
 
-# 🔑 Environment Variables
+## 🔑 Environment Variables
+
+Create a `.env` file inside `backend/`:
 
 ```env
 PORT=5000
-
-MONGODB_URI=your_mongodb_connection
-
-JWT_SECRET=your_secret
-
+MONGODB_URI=mongodb://localhost:27017/transitops
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRES_IN=7d
+NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 ```
 
 ---
 
-# 📸 Screenshots
+## 👥 Role & Permission Matrix
 
-```text
-📷 Landing Page
+| Resource | Read Access | Write Access |
+|---|---|---|
+| **Vehicles** | All roles | Fleet Manager |
+| **Drivers** | All roles | Fleet Manager, Safety Officer |
+| **Trips** | All roles | Fleet Manager, Driver |
+| **Maintenance** | All roles | Fleet Manager |
+| **Fuel Logs** | All roles | Financial Analyst |
+| **Expenses** | All roles | Financial Analyst |
+| **Reports** | All roles | Financial Analyst |
 
-📷 Login
+Enforced identically on the backend (`authorizeMiddleware`) and mirrored in the frontend UI, so restricted actions are hidden — not just blocked.
 
-📷 Dashboard
+---
 
-📷 Vehicle Management
+## ✅ Business Rules Enforced
 
-📷 Driver Management
+- 🔒 Vehicle registration numbers and driver license numbers must be unique
+- 🚫 Retired or In Shop vehicles never appear in dispatch selection
+- 🚫 Suspended drivers or drivers with expired licenses cannot be assigned to trips
+- 🚫 A vehicle or driver already **On Trip** cannot be assigned to another trip
+- ⚖️ Cargo weight cannot exceed a vehicle's maximum load capacity
+- 🔁 Dispatch → both vehicle & driver set to **On Trip**
+- 🔁 Complete / Cancel → both restored to **Available**
+- 🔧 Active maintenance → vehicle set to **In Shop**; closing restores it (unless Retired)
+- 💰 Operational cost = Fuel + Maintenance, computed automatically per vehicle
 
-📷 Trip Management
+---
 
-📷 Maintenance
+## 📁 Project Structure
+
+```
+TransitOps/
+├── backend/
+│   ├── controllers/     # Request handlers
+│   ├── services/        # Business logic & rule enforcement
+│   ├── models/           # Mongoose schemas
+│   ├── routes/            # Express routes
+│   ├── middleware/       # Auth, RBAC, error handling
+│   ├── validators/       # Request validation
+│   ├── scripts/          # One-off/migration scripts
+│   └── server.js
+├── frontend/
+│   └── src/
+│       ├── pages/         # Dashboard, Vehicles, Drivers, Trips, Maintenance, Fuel & Expenses, Reports
+│       ├── layouts/       # App shell & sidebar navigation
+│       ├── context/       # Auth context
+│       └── services/      # API layer
+└── README.md
 ```
 
 ---
 
-# 🤝 Contributing
+## 📄 License
 
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push the branch
-5. Open a Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-<div align="center">
-
-### ⭐ If you found this project helpful, consider giving it a star!
-
-Made with ❤️ using the MERN Stack.
+Distributed under the **MIT License**. See `LICENSE` for details.
 
 </div>
