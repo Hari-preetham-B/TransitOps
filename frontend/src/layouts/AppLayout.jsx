@@ -5,6 +5,8 @@ import {
   Users,
   Route,
   Wrench,
+  Droplet,
+  BarChart3,
   LogOut,
 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
@@ -16,6 +18,8 @@ const navItems = [
   { to: "/drivers", label: "Drivers", icon: Users },
   { to: "/trips", label: "Trips", icon: Route },
   { to: "/maintenance", label: "Maintenance", icon: Wrench },
+  { to: "/fuel-expenses", label: "Fuel & Expenses", icon: Droplet },
+  { to: "/reports", label: "Reports", icon: BarChart3 },
 ];
 
 function AppLayout({ children }) {

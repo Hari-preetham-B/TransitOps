@@ -10,6 +10,8 @@ import VehiclesPage from "../pages/VehiclesPage";
 import DriversPage from "../pages/DriversPage";
 import TripsPage from "../pages/TripsPage";
 import MaintenancePage from "../pages/MaintenancePage";
+import FuelExpensesPage from "../pages/FuelExpensesPage";
+import ReportsPage from "../pages/ReportsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 
 function AppRoutes() {
@@ -59,16 +61,34 @@ function AppRoutes() {
         }
       />
 
-      <Route
-        path="/maintenance"
-        element={
-          <ProtectedRoute>
-            <MaintenancePage />
-          </ProtectedRoute>
-        }
-      />
+       <Route
+         path="/maintenance"
+         element={
+           <ProtectedRoute>
+             <MaintenancePage />
+           </ProtectedRoute>
+         }
+       />
 
-      {/* 404 */}
+       <Route
+         path="/fuel-expenses"
+         element={
+           <ProtectedRoute>
+             <FuelExpensesPage />
+           </ProtectedRoute>
+         }
+       />
+
+       <Route
+         path="/reports"
+         element={
+           <ProtectedRoute>
+             <ReportsPage />
+           </ProtectedRoute>
+         }
+       />
+
+       {/* 404 */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
