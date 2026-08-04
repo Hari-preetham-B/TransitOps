@@ -11,6 +11,9 @@ const vehicleRoutes = require("./routes/vehicleRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const tripRoutes = require("./routes/tripRoutes");
 const maintenanceRoutes = require("./routes/maintenanceRoutes");
+const fuelLogRoutes = require("./routes/fuelLogRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 const errorMiddleware = require("./middleware/errorMiddleware");
 
@@ -49,6 +52,9 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/trips", tripRoutes);
 app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api/fuel-logs", fuelLogRoutes);
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/reports", reportRoutes);
 /*
 |--------------------------------------------------------------------------
 | Health Check Route

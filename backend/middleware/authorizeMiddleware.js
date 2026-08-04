@@ -20,6 +20,18 @@ const permissionMatrix = {
     read: ["Fleet Manager", "Driver", "Safety Officer", "Financial Analyst"],
     write: ["Fleet Manager"],
   },
+  fuelLogs: {
+    read: ["Fleet Manager", "Driver", "Safety Officer", "Financial Analyst"],
+    write: ["Financial Analyst"],
+  },
+  expenses: {
+    read: ["Fleet Manager", "Driver", "Safety Officer", "Financial Analyst"],
+    write: ["Financial Analyst"],
+  },
+  reports: {
+    read: ["Fleet Manager", "Driver", "Safety Officer", "Financial Analyst"],
+    write: ["Financial Analyst"],
+  },
 };
 
 /**
