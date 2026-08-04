@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { Plus, X, Check, Wrench } from "lucide-react";
 import {
@@ -33,6 +34,8 @@ const inputClass =
   "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none";
 
 function MaintenancePage() {
+  const { user } = useContext(AuthContext);
+  const canWrite = ["Fleet Manager"].includes(user?.role);
   const [records, setRecords] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -147,12 +150,14 @@ function MaintenancePage() {
             Shop.
           </p>
         </div>
-        <button
-          onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          <Plus size={16} /> Add Maintenance
-        </button>
+        {canWrite && (
+          <button
+            onClick={openCreate}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            <Plus size={16} /> Add Maintenance
+          </button>
+        )}
       </div>
 
       <div className="mb-4">
@@ -218,14 +223,16 @@ function MaintenancePage() {
                   <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => openEdit(r)}
-                      className="mr-2 rounded p-1 text-blue-600 hover:bg-blue-50"
+                      disabled={!canWrite}
+                      className="mr-2 rounded p-1 text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Edit"
                     >
                       <Wrench size={16} />
                     </button>
                     <button
                       onClick={() => handleDelete(r._id)}
-                      className="rounded p-1 text-red-600 hover:bg-red-50"
+                      disabled={!canWrite}
+                      className="rounded p-1 text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Delete"
                     >
                       <X size={16} />

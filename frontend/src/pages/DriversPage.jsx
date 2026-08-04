@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { Plus, Pencil, Trash2, X, Check } from "lucide-react";
 import {
@@ -27,6 +28,8 @@ const inputClass =
   "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none";
 
 function DriversPage() {
+  const { user } = useContext(AuthContext);
+  const canWrite = ["Fleet Manager", "Safety Officer"].includes(user?.role);
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -139,12 +142,14 @@ function DriversPage() {
           <h1 className="text-2xl font-bold text-slate-800">Drivers</h1>
           <p className="text-sm text-slate-500">Manage your drivers</p>
         </div>
-        <button
-          onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          <Plus size={16} /> Add Driver
-        </button>
+        {canWrite && (
+          <button
+            onClick={openCreate}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            <Plus size={16} /> Add Driver
+          </button>
+        )}
       </div>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
@@ -220,22 +225,24 @@ function DriversPage() {
                         {d.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
-                      <button
-                        onClick={() => openEdit(d)}
-                        className="mr-2 rounded p-1 text-blue-600 hover:bg-blue-50"
-                        title="Edit"
-                      >
-                        <Pencil size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(d._id)}
-                        className="rounded p-1 text-red-600 hover:bg-red-50"
-                        title="Delete"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => openEdit(d)}
+                      disabled={!canWrite}
+                      className="mr-2 rounded p-1 text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Edit"
+                    >
+                      <Pencil size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(d._id)}
+                      disabled={!canWrite}
+                      className="rounded p-1 text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Delete"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </td>
                   </tr>
                 );
               })}

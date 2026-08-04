@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { Plus, X, Check, Play, CheckCircle2, XCircle } from "lucide-react";
 import {
@@ -29,6 +30,8 @@ const inputClass =
   "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none";
 
 function TripsPage() {
+  const { user } = useContext(AuthContext);
+  const canWrite = ["Fleet Manager", "Driver"].includes(user?.role);
   const [trips, setTrips] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [drivers, setDrivers] = useState([]);
@@ -143,12 +146,14 @@ function TripsPage() {
             Create and manage trips. Dispatch to commit vehicle & driver.
           </p>
         </div>
-        <button
-          onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          <Plus size={16} /> Create Trip
-        </button>
+        {canWrite && (
+          <button
+            onClick={openCreate}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            <Plus size={16} /> Create Trip
+          </button>
+        )}
       </div>
 
       <div className="mb-4">
@@ -209,7 +214,8 @@ function TripsPage() {
                     {t.status === "Draft" && (
                       <button
                         onClick={() => handleStatusChange(t._id, "Dispatched")}
-                        className="mr-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-green-600 hover:bg-green-50"
+                        disabled={!canWrite}
+                        className="mr-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-green-600 hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Dispatch"
                       >
                         <Play size={14} /> Dispatch
@@ -219,14 +225,16 @@ function TripsPage() {
                       <>
                         <button
                           onClick={() => handleStatusChange(t._id, "Completed")}
-                          className="mr-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50"
+                          disabled={!canWrite}
+                          className="mr-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Complete"
                         >
                           <CheckCircle2 size={14} /> Complete
                         </button>
                         <button
                           onClick={() => handleStatusChange(t._id, "Cancelled")}
-                          className="mr-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
+                          disabled={!canWrite}
+                          className="mr-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Cancel"
                         >
                           <XCircle size={14} /> Cancel
@@ -235,7 +243,8 @@ function TripsPage() {
                     )}
                     <button
                       onClick={() => handleDelete(t._id)}
-                      className="rounded p-1 text-red-600 hover:bg-red-50"
+                      disabled={!canWrite}
+                      className="rounded p-1 text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Delete"
                     >
                       <X size={16} />
